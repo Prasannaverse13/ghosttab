@@ -1,0 +1,21 @@
+# fly launch --no-deploy, then: fly volumes create ghosttab_data --size 1 ; fly secrets set SOLANA_PAYOUT_SECRET=... SELLER_PAYOUT_ADDRESS=... ; fly deploy
+app = "ghosttab"
+primary_region = "sin"
+
+[build]
+
+[env]
+  PORT = "8080"
+  SOLANA_CLUSTER = "devnet"
+  SOLANA_RPC = "https://api.devnet.solana.com"
+
+[[mounts]]
+  source = "ghosttab_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GhostTab — Private payments for AI agents</title>
+  <meta name="description" content="GhostTab lets AI agents pay for APIs over x402 with blind-signed credit. Fund once from Solana, Tempo, Ethereum or Zcash — spend without an on-chain trail.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="app.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M6 16C6 9 10 4 16 4s10 5 10 12v11c0 2-2 2-3 1-1-2-3-2-4 0-1 2-3 2-4 0-1-2-3-2-4 0-1 1-3 1-3-1z' fill='%23ed4a29'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="nav">
+  <a class="wordmark" href="#" aria-label="GhostTab home">
+    <span>GHOST</span><span>TAB<sup>x402</sup></span>
+  </a>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="#how">How it works</a>
+    <a href="#chains">Chains</a>
+    <a href="#faq">FAQ</a>
+    <a href="#docs">Docs</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="btn btn-fill btn-sm" type="button" data-connect>Connect Wallet</button>
+    <a class="btn btn-fill btn-sm btn-launch" href="app.html">Launch App <span aria-hidden="true">→</span></a>
+  </div>
+  <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" id="burger">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="mobile-menu" id="mobile-menu" hidden>
+  <a href="#how">How it works</a><a href="#chains">Chains</a><a href="#faq">FAQ</a><a href="#docs">Docs</a>
+  <a class="btn btn-fill" href="app.html">Launch App →</a>
+</div>
+
+<main>
+  <!-- Character gallery: two marquee rows -->
+  <section class="gallery" aria-label="GhostTab agents">
+    <div class="marquee-row"><div class="marquee" data-row="0"></div></div>
+    <div class="marquee-row reverse"><div class="marquee" data-row="1"></div></div>
+  </section>
+
+  <!-- Ticker -->
+  <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker"></div></div>
+
+  <!-- Hero -->
+  <section class="hero wrap">
+    <h1>Agent payments are about to go off the <em>record</em>.</h1>
+    <p>GhostTab lets AI agents pay for APIs over x402 with blind-signed credit. Fund once from Solana, Tempo, Ethereum or Zcash, then pay for every call without leaving a single on-chain trail back to your wallet.</p>
+  </section>
+
+  <!-- Feature cards -->
+  <section class="cards wrap" id="chains">
+    <article class="card card-periwinkle">
+      <span class="burst" aria-hidden="true">✺</span>
+      <h2>Fund once, from <em>any</em> chain</h2>
+      <p>Top up your agent's tab with a single deposit on Solana, Tempo, Ethereum or a shielded Zcash note. That one transaction is the only thing the chain ever sees. Everything after it happens off the record.</p>
+      <div class="coins" id="coins"></div>
+    </article>
+    <article class="card card-blush">
+      <span class="burst" aria-hidden="true">✺</span>
+      <h2>Spend without a <em>trail</em></h2>
+      <p>Your deposit mints blind-signed credit tokens. The mint signs them without ever seeing them, so no one, not even GhostTab, can link a paid API call back to the wallet that funded it.</p>
+      <div class="card-figure" id="rare"></div>
+    </article>
+    <article class="card card-sage card-wide">
+      <div class="wide-copy">
+        <span class="burst burst-peach" aria-hidden="true">✺</span>
+        <h2 class="peach">Your agent's strategy <em>stays</em> yours.</h2>
+        <p>On plain x402, every paid call is a public receipt: which data feeds your trading agent buys, how often, and for how much. GhostTab turns that ledger into one deposit and one payout, so competitors have nothing to copy.</p>
+      </div>
+      <div class="wide-figure" id="masked"></div>
+    </article>
+  </section>
+
+  <!-- How it works carousel -->
+  <section class="steps" id="how">
+    <div class="steps-head wrap-left">
+      <h2>How a call gets paid</h2>
+      <div class="steps-ctrl">
+        <button class="round" type="button" id="prev" aria-label="Previous step">←</button>
+        <button class="round" type="button" id="next" aria-label="Next step">→</button>
+      </div>
+    </div>
+    <div class="steps-track" id="steps"></div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq wrap" id="faq">
+    <h2>Your questions, <em>answered</em>.</h2>
+    <div class="faq-list">
+      <div class="qa">
+        <h3>What's x402?</h3>
+        <p>x402 revives the HTTP <b>402 Payment Required</b> status code so APIs can charge per request. The server answers with a price, the client retries with a payment header, and the data comes back. It's how AI agents pay for things without accounts or API keys.</p>
+      </div>
+      <div class="qa">
+        <h3>What does GhostTab actually hide?</h3>
+        <p>The link between who paid and what they paid for. Observers see one deposit into the mint and batched payouts to sellers. They can't see which wallet called which API, how often, or when.</p>
+      </div>
+      <div class="qa">
+        <h3>Is the mint custodial?</h3>
+        <p>In v1, yes. It works like a Cashu-style ecash mint, so keep balances small and working. Next on the roadmap is a federated mint that uses <b>FROST threshold signatures</b>, so no single operator can freeze or forge credit.</p>
+      </div>
+      <div class="qa">
+        <h3>Which chains can I fund from?</h3>
+        <p>Solana (USDC), Tempo stablecoins, Ethereum, and shielded Zcash. Credit is chain-agnostic once it's minted, so an agent funded on one chain can pay any GhostTab-enabled API.</p>
+      </div>
+      <div class="qa">
+        <h3>How do sellers get paid?</h3>
+        <p>Add one line of middleware, <code>ghosttab.protect({ price: 0.01 })</code>, to accept tokens. Sellers redeem them in batches and get paid in USDC on Solana.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community / footer -->
+  <section class="join" id="docs">
+    <h2 class="join-title">Go <em>ghost</em>.</h2>
+    <div class="join-body">
+      <div>
+        <p>Read the docs, wire up the SDK, and give your agent a tab that leaves no trail.</p>
+        <div class="join-actions">
+          <a class="btn btn-fill" href="app.html">Launch the demo</a>
+          <a class="btn btn-ghost" href="https://github.com/" target="_blank" rel="noopener">Star on GitHub</a>
+        </div>
+      </div>
+      <div class="join-figure" id="footer-ghost"></div>
+    </div>
+  </section>
+</main>
+
+<script src="ghosts.js"></script>
+<script src="landing.js"></script>
+<script type="module" src="dist/site.js"></script>
+</body>
+</html>

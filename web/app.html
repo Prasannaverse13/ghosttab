@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GhostTab App — fund, spend, vanish</title>
+  <meta name="description" content="Fund an agent tab once, let it pay for APIs over x402, and watch the public ledger stay empty.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="app.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M6 16C6 9 10 4 16 4s10 5 10 12v11c0 2-2 2-3 1-1-2-3-2-4 0-1 2-3 2-4 0-1-2-3-2-4 0-1 1-3 1-3-1z' fill='%23ed4a29'/%3E%3C/svg%3E">
+</head>
+<body class="app">
+
+<header class="nav">
+  <a class="wordmark" href="index.html" aria-label="GhostTab home"><span>GHOST</span><span>TAB<sup>x402</sup></span></a>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="index.html#how">How it works</a>
+    <a href="index.html#faq">FAQ</a>
+    <a href="index.html">Home</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="btn btn-fill btn-sm" type="button" data-connect>Connect Wallet</button>
+  </div>
+</header>
+
+<section class="gate wrap" id="gate">
+  <h1>Connect a wallet to <em>enter</em>.</h1>
+  <p>No account, no sign-up. Your wallet is your identity: MetaMask for Ethereum and Tempo, Phantom for Solana.</p>
+  <div class="btn-row"><button class="btn btn-fill" type="button" data-connect>Connect Wallet</button><a class="btn btn-ghost" href="index.html">Back home</a></div>
+</section>
+
+<main>
+  <section class="app-hero wrap">
+    <div>
+      <h1>Fund once. Spend <em>silently</em>.</h1>
+      <p>Deposit stablecoins, let your agent pay for three real-feeling APIs over x402, then compare what the public chain learns with and without GhostTab.</p>
+    </div>
+  </section>
+
+  <p class="app-error wrap" id="app-error" role="alert" hidden></p>
+
+  <section class="steps3 wrap" aria-label="Demo steps">
+    <!-- 1. Fund -->
+    <article class="card card-periwinkle app-card">
+      <span class="burst" aria-hidden="true"></span>
+      <h2><span class="num">1</span><span>Fund the <em>tab</em></span></h2>
+      <p class="lead">One deposit is the only thing that ever touches the chain.</p>
+
+      <div class="chips" id="chains" role="radiogroup" aria-label="Deposit chain">
+        <button class="chip on" type="button" role="radio" aria-checked="true" data-chain="solana">Solana</button>
+        <button class="chip" type="button" role="radio" aria-checked="false" data-chain="tempo">Tempo</button>
+        <button class="chip" type="button" role="radio" aria-checked="false" data-chain="ethereum">Ethereum</button>
+        <button class="chip" type="button" role="radio" aria-checked="false" data-chain="zcash">Zcash</button>
+      </div>
+
+      <label class="field">
+        <span>Amount (USDC)</span>
+        <input id="amount" type="number" inputmode="decimal" min="0.1" max="100" step="0.1" value="2">
+      </label>
+
+      <div class="btn-row">
+        <button class="btn btn-fill" type="button" id="deposit">Deposit</button>
+      </div>
+      <p class="note" id="deposit-note"></p>
+      <div class="zbox" id="zbox" hidden>
+        <b>Shielded Zcash deposit</b>
+        <p>Zcash has no browser wallet. Shielded deposits (send ZEC to a unified shielded address, claim with a viewing-key proof) are on the roadmap. Fund with Solana, Tempo or Ethereum for now.</p>
+      </div>
+    </article>
+
+    <!-- 2. Tokens -->
+    <article class="card card-blush app-card">
+      <span class="burst" aria-hidden="true"></span>
+      <h2><span class="num">2</span><span>Your blind <em>tokens</em></span></h2>
+      <p class="lead">Credit the mint signed without ever seeing it.</p>
+      <div class="balance"><span id="bal">$0.00</span><small id="bal-units">0 units</small></div>
+      <div class="toks" id="toks" aria-label="Tokens in wallet"><span class="empty">Nothing yet. Deposit to mint tokens.</span></div>
+      <p class="note">1 unit = $0.001. Tokens are bearer cash: whoever holds one can spend it, and nobody can link it to your deposit.</p>
+    </article>
+
+    <!-- 3. Run -->
+    <article class="card card-sage app-card">
+      <span class="burst burst-peach" aria-hidden="true"></span>
+      <h2 class="peach"><span class="num">3</span><span>Run the <em>agent</em></span></h2>
+      <p class="lead dark">It calls three paid APIs, paying with tokens in the x402 header.</p>
+      <div class="btn-row">
+        <button class="btn btn-fill" type="button" id="run">Run agent</button>
+        <label class="rounds">Rounds
+          <select id="rounds"><option>1</option><option selected>3</option><option>5</option><option>8</option></select>
+        </label>
+      </div>
+      <ol class="log" id="log" aria-live="polite"><li class="muted">Waiting for the first call…</li></ol>
+    </article>
+  </section>
+
+  <!-- The money shot -->
+  <section class="versus wrap" aria-labelledby="vs-title">
+    <h2 id="vs-title">What the chain <em>sees</em></h2>
+    <p class="vs-sub">Same agent, same calls. Left: every payment is public. Right: GhostTab.</p>
+    <div class="split">
+      <article class="panel panel-plain">
+        <header>
+          <div class="pcount"><b id="plain-count">0</b><span>public payments</span></div>
+          <div class="ptitle"><h3>Plain x402</h3><small>wallet &rarr; seller, per call</small></div>
+        </header>
+        <ul class="rows" id="plain-rows"><li class="muted">No calls yet.</li></ul>
+        <p class="infer" id="plain-infer"></p>
+      </article>
+      <article class="panel panel-ghost">
+        <header>
+          <div class="pcount"><b id="ghost-count">0</b><span>public events</span></div>
+          <div class="ptitle"><h3>GhostTab</h3><small>deposit in, batched payouts out</small></div>
+        </header>
+        <ul class="rows" id="ghost-rows"><li class="muted">No deposit yet.</li></ul>
+        <p class="infer" id="ghost-infer"></p>
+        <div class="btn-row"><button class="btn btn-ghost btn-sm" type="button" id="settle">Settle sellers now</button><button class="btn btn-ghost btn-sm" type="button" id="reset">Clear view</button></div>
+        <p class="infer" style="font-size:13px;opacity:.8;margin-top:12px">Tip: sellers are paid out automatically every 30 seconds. To watch a payout happen, run the agent, then click <b>Settle sellers now</b> right away, before the 30-second timer fires. If it says "Nothing to settle yet", the timer already paid them and the payouts are in the ledger above.</p>
+      </article>
+    </div>
+    <p class="fine">Privacy grows with traffic: batching and a shared mint mean more agents hide each other. The v1 mint is custodial, so keep balances small. A federated FROST mint is on the roadmap.</p>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="ghosts.js"></script>
+<script type="module" src="dist/site.js"></script>
+<script type="module" src="dist/app.js"></script>
+</body>
+</html>
