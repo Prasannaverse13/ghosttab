@@ -6,7 +6,7 @@ const TRANSFER = parseAbiItem('event Transfer(address indexed from, address inde
 
 /**
  * Verifies an ERC-20 USDC transfer to the mint's address on any EVM chain (Ethereum Sepolia, Tempo testnet, ...).
- * Assumes the stablecoin has 6 decimals. UNTESTED against a live chain here: run one real testnet transfer first.
+ * Assumes the stablecoin has 6 decimals. Not yet exercised end to end with MetaMask: run one real testnet transfer before relying on it.
  */
 export class EvmVerifier implements DepositVerifier {
   private client;

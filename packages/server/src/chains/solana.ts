@@ -6,7 +6,7 @@ import { claimMessage, type DepositVerifier } from './types.js';
 
 /**
  * Verifies an SPL-USDC transfer to the mint's address.
- * UNTESTED against live devnet in this repo's CI: exercise it with a real devnet transfer before demoing.
+ * Exercised end to end on Solana devnet (CLI agent and Phantom in the browser).
  */
 export class SolanaVerifier implements DepositVerifier {
   private conn: Connection;
