@@ -45,9 +45,11 @@ docker build -t ghosttab .
 docker run -p 8080:8080 -v ghosttab-data:/data --env-file .env ghosttab
 ```
 
-or on Fly.io: `fly launch --no-deploy`, `fly volumes create ghosttab_data --size 1`,
-`fly secrets set SOLANA_PAYOUT_SECRET=... SELLER_PAYOUT_ADDRESS=...`, `fly deploy` (see `fly.toml`).
-Wallet connection needs HTTPS, which Fly provides. Demo video script: [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md).
+or on Render (free tier, builds the `Dockerfile` from this repo): New Web Service, Runtime Docker, then set
+`SOLANA_PAYOUT_SECRET`, `SELLER_PAYOUT_ADDRESS`, `EVM_MINT_ADDRESS`, `STATE_FILE=/tmp/mint.json`,
+`SOLANA_CLUSTER=devnet`, `SOLANA_RPC`. Leave `PORT` unset. The free disk is ephemeral and the service sleeps when idle,
+so a restart mints new keys (old browser tokens stop working); use a persistent volume (see `fly.toml`) for anything longer-lived.
+Live demo (devnet): https://ghosttab.onrender.com. Wallet connection needs HTTPS, which Render provides. Demo video script: [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md).
 
 ## Layout
 
