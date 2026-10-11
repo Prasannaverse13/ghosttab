@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset="utf-8"><title>GhostTab intro</title>
+<style>
+:root{--bg:#F4F4F2;--ink:#212529;--red:#ED4A29;--navy:#142855;--blue:#A0B0D0;--pink:#E6C9DE;--sage:#8F9A76}
+*{box-sizing:border-box;margin:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--ink);font-family:Inter,Arial,sans-serif;color:var(--bg)}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:36px;opacity:0;transition:opacity .6s}
+.scene.on{opacity:1}
+h1,h2{font-family:"DejaVu Serif",Georgia,serif;font-weight:500;text-align:center;line-height:1.1;letter-spacing:-1px}
+h2{font-size:112px;max-width:1500px}
+h1{font-size:220px}
+em{font-style:italic;color:var(--red)}
+.sub{font-size:44px;opacity:.8;text-align:center;max-width:1300px;line-height:1.35}
+.rows{width:1200px;display:flex;flex-direction:column;gap:14px;font:34px "DejaVu Sans Mono",monospace}
+.row{display:flex;justify-content:space-between;padding:18px 28px;border:2px solid #ED4A29;border-radius:12px;color:var(--bg);opacity:0;transform:translateY(30px);transition:all .45s}
+.row.on{opacity:1;transform:none}
+.row b{color:var(--red)}
+.sun{width:200px;height:200px}
+.sun i{position:absolute;left:50%;top:50%;width:6px;height:90px;background:var(--bg);transform-origin:0 0;border-radius:3px}
+.sunwrap{position:relative;width:200px;height:200px;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pop>*{opacity:0;transform:translateY(26px) scale(.96);transition:all .6s}
+.pop.on>*{opacity:1;transform:none}
+.pop.on>*:nth-child(2){transition-delay:.25s}.pop.on>*:nth-child(3){transition-delay:.5s}.pop.on>*:nth-child(4){transition-delay:.75s}
+.chips{display:flex;gap:28px}
+.chip{font-size:44px;padding:22px 46px;border-radius:60px;background:var(--bg);color:var(--ink);font-weight:600}
+.chip:nth-child(1){background:var(--blue)}.chip:nth-child(2){background:var(--pink)}.chip:nth-child(3){background:var(--sage)}
+.sc3{background:var(--navy)}
+.sc4{background:var(--red);color:var(--ink)}
+.sc4 em{color:var(--ink)}
+.bg{position:absolute;inset:0;z-index:-1}
+.url{font-size:40px;font-weight:600}
+</style></head><body>
+<div class="scene" id="s1"><h2>Every agent payment is <em>public</em>.</h2>
+<div class="rows" id="rows"></div></div>
+<div class="scene sc2 pop" id="s2" style="background:var(--ink)"><h2>Your agent's strategy, <em>readable</em> by anyone.</h2><p class="sub">Which APIs it buys. How often. Exactly when.</p></div>
+<div class="scene sc3 pop" id="s3"><div class="sunwrap" id="sun"></div><h1>GhostTab</h1><p class="sub">Fund once. Spend <i style="font-family:'DejaVu Serif',serif">silently</i>.</p></div>
+<div class="scene sc3 pop" id="s4"><h2>Private pay-per-call for AI agents</h2><div class="chips"><div class="chip">Solana</div><div class="chip">Tempo</div><div class="chip">Ethereum</div></div><p class="sub">Blind-signed tokens over x402. No on-chain trail per call.</p></div>
+<div class="scene sc4 pop" id="s5"><h1 style="font-size:200px">Go <em>ghost</em>.</h1><p class="url">ghosttab.onrender.com</p><p class="url" style="font-weight:500">github.com/Prasannaverse13/ghosttab</p></div>
+<script>
+const sun=document.getElementById('sun');for(let i=0;i<32;i++){const e=document.createElement('i');e.style.transform=`rotate(${i*11.25}deg) translateY(-100px)`;e.style.left='100px';e.style.top='100px';sun.appendChild(e)}
+const data=[['3Lvm…dgj8 → FeeRadar','$0.010'],['3Lvm…dgj8 → SentimentPulse','$0.005'],['3Lvm…dgj8 → PriceFeed','$0.005'],['3Lvm…dgj8 → FeeRadar','$0.010'],['3Lvm…dgj8 → PriceFeed','$0.005']];
+const rows=document.getElementById('rows');data.forEach(d=>{const r=document.createElement('div');r.className='row';r.innerHTML=`<span>${d[0]}</span><b>${d[1]}</b>`;rows.appendChild(r)});
+const on=id=>document.getElementById(id).classList.add('on'),off=id=>document.getElementById(id).classList.remove('on');
+const T=[[0.3,()=>on('s1')],...[...Array(5)].map((_,i)=>[1.2+i*.55,()=>rows.children[i].classList.add('on')]),
+[4.6,()=>off('s1')],[5.0,()=>on('s2')],[8.4,()=>off('s2')],[8.9,()=>on('s3')],[12.4,()=>off('s3')],[12.9,()=>on('s4')],[17.2,()=>off('s4')],[17.7,()=>on('s5')],[22.5,()=>{}]];
+T.forEach(([t,f])=>setTimeout(f,t*1000));
+</script></body></html>
